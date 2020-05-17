@@ -39,3 +39,10 @@ plot_multiple_repos <- function(ghstars_tbl, geom = "step") {
       title = "GitHub Star History"
     )
 }
+
+autoplot.ghstars_tbl <- function(object) {
+  old_theme <- ggcharts::ggcharts_set_theme("theme_ng")
+  on.exit(ggcharts::ggcharts_set_theme(old_theme))
+  ggcharts::bar_chart(object, repo, stars) +
+    labs(x = "Repository", y = "Stars")
+}
