@@ -17,8 +17,8 @@ plot_single_repo <- function(ghstars_tbl, geom = "step") {
     ggcharts::theme_ng(grid = "xy", ticks = "x") +
     theme(legend.position = c(.05, .95)) +
     labs(
-      x = "Date",
-      y = "Cumulative Number of Stars",
+      x = NULL,
+      y = NULL,
       title = paste("GitHub Star History of", repo)
     )
 }
@@ -35,7 +35,7 @@ plot_multiple_repos <- function(ghstars_tbl, geom = "step") {
     ) +
     labs(
       x = "Days Since 1st Star",
-      y = "Cumulative Number of Stars",
+      y = NULL,
       title = "GitHub Star History"
     )
 }
