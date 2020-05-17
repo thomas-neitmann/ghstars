@@ -29,8 +29,10 @@ Retrieve the star history of any GitHub repository
 }
 \details{
 \code{get_pkg_star_history()} is a shortcut for retrieving the star history of an
-\code{R} package. The function tries to find the GitHub repository of the package
-and-if it does-calls \code{get_repo_star_history()}.
+\code{R} package. The function tries to find the GitHub repository of the package.
+If it succeeds it continues calling \code{get_repo_star_history()}. If it fails either
+a warning or an error is thrown depending on whether a GitHub repo couldn't be
+found for some or all \code{pkg}, respectively.
 }
 \examples{
 get_repo_star_history("thomas-neitmann/mdthemes")

@@ -66,27 +66,39 @@ get_repo_star_history_single <- function(repo) {
   )
 }
 
+#' Retrieve Stars of a GitHub Repo
+#'
+#' Retrieve the current number of stars of a GitHub repository
+#'
+#' @param repo `character`. Repository name(s) in the form `user/reponame`
+#' @param pkg `character`. Name of an `R` package.
+#'
+#' @details
+#' `get_pkg_stars()` is a shortcut for retrieving the stars of an `R` package.
+#' The function tries to find the GitHub repository of the package. If it
+#' succeeds it continues calling `get_repo_stars()`. If it fails either a warning
+#' or an error is thrown depending on whether a GitHub repo couldn't be
+#' found for some or all `pkg`, respectively.
+#'
+#' @return
+#' An object of class `c("ghstars_tbl", "data.frame")` with 2 columns:
+#' * `repo`: Name of the repository
+#' * `stars`: Number of stars
+#'
+#' @author Thomas Neitmann
+#'
+#' @examples
+#' get_repo_stars("thomas-neitmann/mdthemes")
+#'
+#' get_pkg_stars(c("Rcpp", "scales"))
+#'
 #' @export
 get_repo_stars <- function(repo) {
   list_df <- lapply(repo, get_repo_stars_single)
   do.call(rbind, list_df)
 }
 
-get_repo_stars_single <- function(repo) {
-  repo_info <- gh::gh(
-    endpoint = paste0("GET /repos/", repo),
-    .limit = Inf
-  )
-  structure(
-    data.frame(
-      repo = repo,
-      stars = repo_info[["stargazers_count"]],
-      stringsAsFactors = FALSE
-    ),
-    class = c("ghstars_tbl", "data.frame")
-  )
-}
-
+#' @rdname get_repo_stars
 #' @export
 get_pkg_stars <- function(pkg) {
   repo <- get_pkg_repo(pkg)
@@ -104,4 +116,19 @@ get_pkg_stars <- function(pkg) {
   }
 
   get_repo_stars(repo[!is.na(repo)])
+}
+
+get_repo_stars_single <- function(repo) {
+  repo_info <- gh::gh(
+    endpoint = paste0("GET /repos/", repo),
+    .limit = Inf
+  )
+  structure(
+    data.frame(
+      repo = repo,
+      stars = repo_info[["stargazers_count"]],
+      stringsAsFactors = FALSE
+    ),
+    class = c("ghstars_tbl", "data.frame")
+  )
 }
