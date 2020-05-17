@@ -1,5 +1,5 @@
 #' @export
-autoplot.ghstars_history_tbl <- function(object, geom = "step") {
+plot.ghstars_history_tbl <- function(object, geom = "step") {
   geom <- match.arg(geom, c("step", "line"))
   n_repos <- length(unique(object$repo))
   if (n_repos == 1L) {
@@ -40,7 +40,7 @@ plot_multiple_repos <- function(ghstars_tbl, geom = "step") {
     )
 }
 
-autoplot.ghstars_tbl <- function(object) {
+plot.ghstars_tbl <- function(object) {
   # To avoid the 'no visible binding for global variable' note when
   # running R CMD check
   repo <- NULL
