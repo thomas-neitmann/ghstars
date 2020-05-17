@@ -62,5 +62,18 @@ get_repo_stars_single <- function(repo) {
 #' @export
 get_pkg_stars <- function(pkg) {
   repo <- get_pkg_repo(pkg)
-  get_repo_stars(repo)
+  pkg_without_repo <- pkg[is.na(repo)]
+
+  if (length(pkg_without_repo)) {
+    msg <- paste0(
+      "Could not find a GitHub repo for package ",
+      paste(pkg_without_repo, collapse = ", "), "."
+    )
+    if (length(pkg_without_repo) == length(pkg)) {
+      rlang::abort(msg)
+    }
+    rlang::warn(msg)
+  }
+
+  get_repo_stars(repo[!is.na(repo)])
 }
