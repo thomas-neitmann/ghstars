@@ -56,7 +56,7 @@ get_repo_star_history_single <- function(repo) {
     data.frame(
       repo = repo,
       date = date,
-      day = as.integer(date - date[1L] + 1L),
+      day = as.integer(date - date[1L]),
       stars = c(stars),
       cumulative_stars = cumsum(stars),
       row.names = NULL,
