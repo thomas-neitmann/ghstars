@@ -28,7 +28,7 @@ get_repo_star_history_single <- function(repo) {
       row.names = NULL,
       stringsAsFactors = FALSE
     ),
-    class = c("ghstars_tbl", "data.frame")
+    class = c("ghstars_history_tbl", "data.frame")
   )
 }
 
@@ -49,10 +49,13 @@ get_repo_stars_single <- function(repo) {
     endpoint = paste0("GET /repos/", repo, "/stargazers"),
     .limit = Inf
   )
-  data.frame(
-    repo = repo,
-    stars = length(stargazers),
-    stringsAsFactors = FALSE
+  structure(
+    data.frame(
+      repo = repo,
+      stars = length(stargazers),
+      stringsAsFactors = FALSE
+    ),
+    class = c("ghstars_tbl", "data.frame")
   )
 }
 

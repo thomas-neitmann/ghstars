@@ -1,5 +1,5 @@
 #' @export
-autoplot.ghstars_tbl <- function(object, geom = "step") {
+autoplot.ghstars_history_tbl <- function(object, geom = "step") {
   geom <- match.arg(geom, c("step", "line"))
   n_repos <- length(unique(object$repo))
   if (n_repos == 1L) {
