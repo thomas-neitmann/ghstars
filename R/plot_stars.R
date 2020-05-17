@@ -1,11 +1,11 @@
 #' @export
-plot.ghstars_history_tbl <- function(object, geom = "step") {
+plot.ghstars_history_tbl <- function(x, ..., geom = "step") {
   geom <- match.arg(geom, c("step", "line"))
-  n_repos <- length(unique(object$repo))
+  n_repos <- length(unique(x$repo))
   if (n_repos == 1L) {
-    plot_single_repo(object, geom)
+    plot_single_repo(x, geom)
   } else {
-    plot_multiple_repos(object, geom)
+    plot_multiple_repos(x, geom)
   }
 }
 
@@ -40,13 +40,13 @@ plot_multiple_repos <- function(ghstars_tbl, geom = "step") {
     )
 }
 
-plot.ghstars_tbl <- function(object) {
+plot.ghstars_tbl <- function(x, ...) {
   # To avoid the 'no visible binding for global variable' note when
   # running R CMD check
   repo <- NULL
   stars <- NULL
   old_theme <- ggcharts::ggcharts_set_theme("theme_ng")
   on.exit(ggcharts::ggcharts_set_theme(old_theme))
-  ggcharts::bar_chart(object, repo, stars) +
+  ggcharts::bar_chart(x, repo, stars) +
     labs(x = "Repository", y = "Stars")
 }
