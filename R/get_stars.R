@@ -45,14 +45,14 @@ get_repo_stars <- function(repo) {
 }
 
 get_repo_stars_single <- function(repo) {
-  stargazers <- gh::gh(
-    endpoint = paste0("GET /repos/", repo, "/stargazers"),
+  repo_info <- gh::gh(
+    endpoint = paste0("GET /repos/", repo),
     .limit = Inf
   )
   structure(
     data.frame(
       repo = repo,
-      stars = length(stargazers),
+      stars = repo_info[["stargazers_count"]],
       stringsAsFactors = FALSE
     ),
     class = c("ghstars_tbl", "data.frame")
