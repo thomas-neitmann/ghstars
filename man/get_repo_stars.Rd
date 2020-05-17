@@ -32,9 +32,11 @@ or an error is thrown depending on whether a GitHub repo couldn't be
 found for some or all \code{pkg}, respectively.
 }
 \examples{
+\dontrun{
 get_repo_stars("thomas-neitmann/mdthemes")
 
 get_pkg_stars(c("Rcpp", "scales"))
+}
 
 }
 \author{

@@ -35,7 +35,9 @@ a warning or an error is thrown depending on whether a GitHub repo couldn't be
 found for some or all \code{pkg}, respectively.
 }
 \examples{
+\dontrun{
 get_repo_star_history("thomas-neitmann/mdthemes")
+}
 
 }
 \author{

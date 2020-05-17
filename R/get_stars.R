@@ -23,7 +23,9 @@
 #' @author Thomas Neitmann
 #'
 #' @examples
+#' \dontrun{
 #' get_repo_star_history("thomas-neitmann/mdthemes")
+#' }
 #'
 #' @export
 get_repo_star_history <- function(repo) {
@@ -101,9 +103,11 @@ get_repo_star_history_single <- function(repo) {
 #' @author Thomas Neitmann
 #'
 #' @examples
+#' \dontrun{
 #' get_repo_stars("thomas-neitmann/mdthemes")
 #'
 #' get_pkg_stars(c("Rcpp", "scales"))
+#' }
 #'
 #' @export
 get_repo_stars <- function(repo) {
