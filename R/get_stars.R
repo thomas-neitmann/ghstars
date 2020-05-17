@@ -37,3 +37,22 @@ get_pkg_star_history <- function(pkg) {
   repo <- get_pkg_repo(pkg)
   get_repo_star_history(repo)
 }
+
+#' @export
+get_repo_stars <- function(repo) {
+  vapply(repo, get_repo_stars_single, 1L)
+}
+
+get_repo_stars_single <- function(repo) {
+  stargazers <- gh::gh(
+    endpoint = paste0("GET /repos/", repo, "/stargazers"),
+    .limit = Inf
+  )
+  length(stargazers)
+}
+
+#' @export
+get_pkg_stars <- function(pkg) {
+  repo <- get_pkg_repo(pkg)
+  get_repo_stars(repo)
+}
