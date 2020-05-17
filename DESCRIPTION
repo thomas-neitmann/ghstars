@@ -8,7 +8,8 @@ Description: Provides utility functions to retrieve and plot the GitHub star
     history of any repository.
 Imports: ggcharts,
     ggplot2,
-    gh
+    gh,
+    rlang
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
