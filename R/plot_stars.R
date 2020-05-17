@@ -41,6 +41,10 @@ plot_multiple_repos <- function(ghstars_tbl, geom = "step") {
 }
 
 autoplot.ghstars_tbl <- function(object) {
+  # To avoid the 'no visible binding for global variable' note when
+  # running R CMD check
+  repo <- NULL
+  stars <- NULL
   old_theme <- ggcharts::ggcharts_set_theme("theme_ng")
   on.exit(ggcharts::ggcharts_set_theme(old_theme))
   ggcharts::bar_chart(object, repo, stars) +
