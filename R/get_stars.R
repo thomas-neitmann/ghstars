@@ -40,7 +40,8 @@ get_pkg_star_history <- function(pkg) {
 
 #' @export
 get_repo_stars <- function(repo) {
-  vapply(repo, get_repo_stars_single, 1L)
+  list_df <- lapply(repo, get_repo_stars_single)
+  do.call(rbind, list_df)
 }
 
 get_repo_stars_single <- function(repo) {
@@ -48,7 +49,11 @@ get_repo_stars_single <- function(repo) {
     endpoint = paste0("GET /repos/", repo, "/stargazers"),
     .limit = Inf
   )
-  length(stargazers)
+  data.frame(
+    repo = repo,
+    stars = length(stargazers),
+    stringsAsFactors = FALSE
+  )
 }
 
 #' @export
