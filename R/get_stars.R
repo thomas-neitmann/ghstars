@@ -1,13 +1,13 @@
 #' @export
-get_repo_stars <- function(repo) {
+get_repo_star_history <- function(repo) {
   if (length(repo) == 1L) {
-    return(get_repo_stars_single(repo))
+    return(get_repo_star_history_single(repo))
   }
-  ghstars_list <- lapply(repo, get_repo_stars_single)
+  ghstars_list <- lapply(repo, get_repo_star_history_single)
   do.call(rbind, ghstars_list)
 }
 
-get_repo_stars_single <- function(repo) {
+get_repo_star_history_single <- function(repo) {
   stars <- gh::gh(
     endpoint = paste0("GET /repos/", repo, "/stargazers"),
     .accept = "application/vnd.github.v3.star+json",
@@ -33,7 +33,7 @@ get_repo_stars_single <- function(repo) {
 }
 
 #' @export
-get_pkg_stars <- function(pkg) {
+get_pkg_star_history <- function(pkg) {
   repo <- get_pkg_repo(pkg)
-  get_repo_stars(repo)
+  get_repo_star_history(repo)
 }
