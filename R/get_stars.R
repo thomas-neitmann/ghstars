@@ -40,19 +40,6 @@ get_repo_star_history <- function(repo) {
 #' @export
 get_pkg_star_history <- function(pkg) {
   repo <- get_pkg_repo(pkg)
-  pkg_without_repo <- pkg[is.na(repo)]
-
-  if (length(pkg_without_repo)) {
-    msg <- paste0(
-      "Could not find a GitHub repo for package ",
-      paste(pkg_without_repo, collapse = ", "), "."
-    )
-    if (length(pkg_without_repo) == length(pkg)) {
-      rlang::abort(msg)
-    }
-    rlang::warn(msg)
-  }
-
   get_repo_star_history(repo)
 }
 
@@ -119,20 +106,31 @@ get_repo_stars <- function(repo) {
 #' @export
 get_pkg_stars <- function(pkg) {
   repo <- get_pkg_repo(pkg)
-  pkg_without_repo <- pkg[is.na(repo)]
-
-  if (length(pkg_without_repo)) {
-    msg <- paste0(
-      "Could not find a GitHub repo for package ",
-      paste(pkg_without_repo, collapse = ", "), "."
-    )
-    if (length(pkg_without_repo) == length(pkg)) {
-      rlang::abort(msg)
-    }
-    rlang::warn(msg)
-  }
-
   get_repo_stars(repo[!is.na(repo)])
+}
+
+#' @export
+get_repo_forks <- function(repo) {
+  list_df <- lapply(repo, get_repo_metrics, "forks_count")
+  do.call(rbind, list_df)
+}
+
+#' @export
+get_pkg_forks <- function(pkg) {
+  repo <- get_pkg_repo(pkg)
+  get_repo_forks(repo[!is.na(repo)])
+}
+
+#' @export
+get_repo_watchers <- function(repo) {
+  list_df <- lapply(repo, get_repo_metrics, "subscribers_count")
+  do.call(rbind, list_df)
+}
+
+#' @export
+get_pkg_watchers <- function(pkg) {
+  repo <- get_pkg_repo(pkg)
+  get_repo_watchers(repo[!is.na(repo)])
 }
 
 get_repo_metrics <- function(repo, which) {

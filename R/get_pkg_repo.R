@@ -1,5 +1,19 @@
 get_pkg_repo <- function(pkg) {
-  vapply(pkg, get_pkg_repo_single, "")
+  repo <- vapply(pkg, get_pkg_repo_single, "")
+  pkg_without_repo <- pkg[is.na(repo)]
+
+  if (length(pkg_without_repo)) {
+    msg <- paste0(
+      "Could not find a GitHub repo for package ",
+      paste(pkg_without_repo, collapse = ", "), "."
+    )
+    if (length(pkg_without_repo) == length(pkg)) {
+      rlang::abort(msg)
+    }
+    rlang::warn(msg)
+  }
+
+  repo
 }
 
 get_pkg_repo_single <- function(pkg) {
