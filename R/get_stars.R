@@ -111,7 +111,7 @@ get_repo_star_history_single <- function(repo) {
 #'
 #' @export
 get_repo_stars <- function(repo) {
-  list_df <- lapply(repo, get_repo_stars_single)
+  list_df <- lapply(repo, get_repo_metrics, "stargazers_count")
   do.call(rbind, list_df)
 }
 
@@ -135,17 +135,19 @@ get_pkg_stars <- function(pkg) {
   get_repo_stars(repo[!is.na(repo)])
 }
 
-get_repo_stars_single <- function(repo) {
-  repo_info <- gh::gh(
-    endpoint = paste0("GET /repos/", repo),
-    .limit = Inf
+get_repo_metrics <- function(repo, which) {
+  possibilities <- c(
+    stars = "stargazers_count",
+    forks = "forks_count",
+    watchers = "subscribers_count"
   )
-  structure(
-    data.frame(
-      repo = repo,
-      stars = repo_info[["stargazers_count"]],
-      stringsAsFactors = FALSE
-    ),
-    class = c("ghstars_tbl", "data.frame")
-  )
+  which <- match.arg(which, possibilities, several.ok = TRUE)
+  which <- which[order(match(which, possibilities))]
+
+  repo_info <- gh::gh(endpoint = paste0("GET /repos/", repo))
+  metrics <- data.frame(repo, repo_info[which], stringsAsFactors = FALSE)
+  colnames(metrics) <- c("repo", names(possibilities[possibilities %in% which]))
+  class(metrics) <- c("ghstars_tbl", "data.frame")
+
+  metrics
 }
