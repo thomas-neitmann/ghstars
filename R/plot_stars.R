@@ -40,13 +40,16 @@ plot_multiple_repos <- function(ghstars_tbl, geom = "step") {
     )
 }
 
-plot.ghstars_tbl <- function(x, ...) {
-  # To avoid the 'no visible binding for global variable' note when
-  # running R CMD check
-  repo <- NULL
-  stars <- NULL
+plot.ghmetrics_tbl <- function(x, ..., metric = c("stars", "forks", "watchers", "open_issues")) {
+  metric <- match.arg(metric)
+  args <- list(
+    data = x,
+    x = quote(repo),
+    y = as.symbol(metric)
+  )
+
   old_theme <- ggcharts::ggcharts_set_theme("theme_ng")
   on.exit(ggcharts::ggcharts_set_theme(old_theme))
-  ggcharts::bar_chart(x, repo, stars) +
-    labs(x = "Repository", y = "Stars")
+  do.call(ggcharts::bar_chart, args) +
+    labs(x = NULL, y = tools::toTitleCase(gsub("_", " ", metric)))
 }
