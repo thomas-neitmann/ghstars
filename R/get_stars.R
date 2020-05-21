@@ -68,84 +68,63 @@ get_repo_star_history_single <- function(repo) {
   )
 }
 
-#' Retrieve Stars of a GitHub Repo
+#' Retrieve Metrics of a GitHub Repo
 #'
-#' Retrieve the current number of stars of a GitHub repository
+#' Retrieve the current number of stars, forks, watchers and open issues of a
+#' GitHub repository
 #'
 #' @param repo `character`. Repository name(s) in the form `user/reponame`
 #' @param pkg `character`. Name of an `R` package.
 #'
 #' @details
-#' `get_pkg_stars()` is a shortcut for retrieving the stars of an `R` package.
+#' `get_pkg_metrics()` is a shortcut for retrieving the metrics of an `R` package.
 #' The function tries to find the GitHub repository of the package. If it
-#' succeeds it continues calling `get_repo_stars()`. If it fails either a warning
+#' succeeds it continues calling `get_repo_metrics()`. If it fails either a warning
 #' or an error is thrown depending on whether a GitHub repo couldn't be
 #' found for some or all `pkg`, respectively.
 #'
 #' @return
-#' An object of class `c("ghstars_tbl", "data.frame")` with 2 columns:
-#' * `repo`: Name of the repository
-#' * `stars`: Number of stars
+#' An object of class `c("ghmetrics_tbl", "data.frame")` with 2 columns:
+#' * `repo`        Name of the repository
+#' * `stars`       Number of stars
+#' * `forks`       Number of forks
+#' * `watcher`     Number of watchers
+#' * `open_issues` Number of open issue
 #'
 #' @author Thomas Neitmann
 #'
 #' @examples
 #' \dontrun{
-#' get_repo_stars("thomas-neitmann/mdthemes")
+#' get_repo_metrics("thomas-neitmann/mdthemes")
 #'
-#' get_pkg_stars(c("Rcpp", "scales"))
+#' get_pkg_metrics(c("Rcpp", "scales"))
 #' }
 #'
 #' @export
-get_repo_stars <- function(repo) {
-  list_df <- lapply(repo, get_repo_metrics, "stargazers_count")
-  do.call(rbind, list_df)
+get_repo_metrics <- function(repo) {
+  metrics <- lapply(repo, get_repo_metrics_single)
+  do.call(rbind, metrics)
 }
 
-#' @rdname get_repo_stars
+#' @rdname get_repo_metrics
 #' @export
-get_pkg_stars <- function(pkg) {
+get_pkg_metrics <- function(pkg) {
   repo <- get_pkg_repo(pkg)
-  get_repo_stars(repo[!is.na(repo)])
+  get_repo_metrics(repo)
 }
 
-#' @export
-get_repo_forks <- function(repo) {
-  list_df <- lapply(repo, get_repo_metrics, "forks_count")
-  do.call(rbind, list_df)
-}
-
-#' @export
-get_pkg_forks <- function(pkg) {
-  repo <- get_pkg_repo(pkg)
-  get_repo_forks(repo[!is.na(repo)])
-}
-
-#' @export
-get_repo_watchers <- function(repo) {
-  list_df <- lapply(repo, get_repo_metrics, "subscribers_count")
-  do.call(rbind, list_df)
-}
-
-#' @export
-get_pkg_watchers <- function(pkg) {
-  repo <- get_pkg_repo(pkg)
-  get_repo_watchers(repo[!is.na(repo)])
-}
-
-get_repo_metrics <- function(repo, which) {
-  possibilities <- c(
+get_repo_metrics_single <- function(repo) {
+  which <- c(
     stars = "stargazers_count",
     forks = "forks_count",
-    watchers = "subscribers_count"
+    watchers = "subscribers_count",
+    open_issues = "open_issues_count"
   )
-  which <- match.arg(which, possibilities, several.ok = TRUE)
-  which <- which[order(match(which, possibilities))]
 
   repo_info <- gh::gh(endpoint = paste0("GET /repos/", repo))
   metrics <- data.frame(repo, repo_info[which], stringsAsFactors = FALSE)
-  colnames(metrics) <- c("repo", names(possibilities[possibilities %in% which]))
-  class(metrics) <- c("ghstars_tbl", "data.frame")
+  colnames(metrics) <- c("repo", names(which))
+  class(metrics) <- c("ghmetrics_tbl", "data.frame")
 
   metrics
 }
