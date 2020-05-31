@@ -43,7 +43,7 @@ get_pkg_star_history <- function(pkg) {
   get_repo_star_history(repo)
 }
 
-get_repo_star_history_single <- function(repo) {
+get_repo_star_history_single <- memoise::memoise(function(repo) {
   stars <- gh::gh(
     endpoint = paste0("GET /repos/", repo, "/stargazers"),
     .accept = "application/vnd.github.v3.star+json",
@@ -66,7 +66,7 @@ get_repo_star_history_single <- function(repo) {
     ),
     class = c("ghstars_history_tbl", "data.frame")
   )
-}
+})
 
 #' Retrieve Metrics of a GitHub Repo
 #'
@@ -113,7 +113,7 @@ get_pkg_metrics <- function(pkg) {
   get_repo_metrics(repo)
 }
 
-get_repo_metrics_single <- function(repo) {
+get_repo_metrics_single <- memoise::memoise(function(repo) {
   which <- c(
     stars = "stargazers_count",
     forks = "forks_count",
@@ -127,4 +127,4 @@ get_repo_metrics_single <- function(repo) {
   class(metrics) <- c("ghmetrics_tbl", "data.frame")
 
   metrics
-}
+})

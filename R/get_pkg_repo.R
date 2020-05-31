@@ -16,7 +16,7 @@ get_pkg_repo <- function(pkg) {
   repo
 }
 
-get_pkg_repo_single <- function(pkg) {
+get_pkg_repo_single <- memoise::memoise(function(pkg) {
   stopifnot(length(pkg) == 1L)
   if (is.null(ghstars_global$pkg_db)) {
     ghstars_global$pkg_db <- tools::CRAN_package_db()
@@ -41,4 +41,4 @@ get_pkg_repo_single <- function(pkg) {
   }
   names(repo) <- pkg
   repo
-}
+})

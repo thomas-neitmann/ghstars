@@ -4,11 +4,12 @@ Title: Retrieve GitHub Stars for any Repository
 Version: 0.1.0
 Author: Thomas Neitmann
 Maintainer: Thomas Neitmann <th.neitmann@gmail.com>
-Description: Provides utility functions to retrieve and plot the GitHub star
-    history of any repository.
+Description: Provides utility functions to retrieve and plot the star
+    history of any GitHub repository.
 Imports: ggcharts,
     ggplot2,
     gh,
+    memoise,
     rlang
 License: MIT + file LICENSE
 Encoding: UTF-8
