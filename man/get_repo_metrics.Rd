@@ -25,7 +25,7 @@ An object of class \code{c("ghmetrics_tbl", "data.frame")} with 2 columns:
 }
 }
 \description{
-Retrieve the current number of stars, forks, watchers and open issue of a
+Retrieve the current number of stars, forks, watchers and open issues of a
 GitHub repository
 }
 \details{

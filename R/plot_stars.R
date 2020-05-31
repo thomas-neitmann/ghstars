@@ -40,6 +40,7 @@ plot_multiple_repos <- function(ghstars_tbl, geom = "step") {
     )
 }
 
+#' @export
 plot.ghmetrics_tbl <- function(x, ..., metric = c("stars", "forks", "watchers", "open_issues")) {
   metric <- match.arg(metric)
   args <- list(
