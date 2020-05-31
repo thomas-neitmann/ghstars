@@ -6,7 +6,8 @@ output: github_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
-  fig.align = "center",
+  fig.align = "left",
+  out.width = "70%",
   message = FALSE,
   error = FALSE
 )
@@ -16,7 +17,7 @@ knitr::opts_chunk$set(
 
 Developers love GitHub. Even more so, they love seeing the stars of their repos rise. This is evident in the popularity of website's such [star-history.t9t.io](https://star-history.t9t.io/) which created plots like this one.
 
-![](man/figures/ggplot2_star_history.PNG)
+<img src="man/figures/ggplot2_star_history.PNG" width="70%"/>
 
 Having a website to create these kind of plots in great but I thought it would be even better to have an `R` package to do so. That's why I created `{ghstars}`.
 
